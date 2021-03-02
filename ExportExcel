@@ -1,0 +1,14 @@
+public static String writeExcel(HttpServletResponse response, Workbook workbook, String fileName) {
+		String errorMsg = "";
+		try {
+	        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+	        response.addHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode(fileName + ".xlsx", "utf-8"));
+	        OutputStream out = response.getOutputStream();
+	        workbook.write(out);
+		} catch(IOException e) {
+			LaminationLogUtil.error(PoiXlsUtil.class, "export schedule excel error: " + e.getMessage(), e);
+			errorMsg = e.getMessage();
+		}
+		
+		return errorMsg;
+}
